@@ -409,6 +409,7 @@ export function useRecordingStop(
     router,
   ]);
 
+
   // Expose handleRecordingStop function to window for Rust callbacks
   const handleRecordingStopRef = useRef(handleRecordingStop);
   useEffect(() => {
@@ -426,6 +427,16 @@ export function useRecordingStop(
     };
   }, []);
 
+
+  // Listen for auto-detect stop event (from useAutoDetect hook)
+  useEffect(() => {
+    const handleAutoStop = () => {
+      console.log('[AutoDetect] Received auto-detect-stop-recording event');
+      handleRecordingStopRef.current(true);
+    };
+    window.addEventListener('auto-detect-stop-recording', handleAutoStop);
+    return () => window.removeEventListener('auto-detect-stop-recording', handleAutoStop);
+  }, []);
   // Derive summaryStatus from RecordingStatus for backward compatibility
   const summaryStatus: SummaryStatus = status === RecordingStatus.PROCESSING_TRANSCRIPTS ? 'processing' : 'idle';
 

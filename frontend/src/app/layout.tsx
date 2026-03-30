@@ -25,6 +25,8 @@ import { RecordingPostProcessingProvider } from '@/contexts/RecordingPostProcess
 import { ImportAudioDialog, ImportDropOverlay } from '@/components/ImportAudio'
 import { ImportDialogProvider } from '@/contexts/ImportDialogContext'
 import { isAudioExtension, getAudioFormatsDisplayList } from '@/constants/audioFormats'
+import { AutoDetectProvider } from '@/contexts/AutoDetectContext'
+import { AutoDetectMonitor } from '@/components/AutoDetectMonitor'
 
 
 const sourceSans3 = Source_Sans_3({
@@ -240,12 +242,14 @@ export default function RootLayout({
                 <OllamaDownloadProvider>
                   <OnboardingProvider>
                     <UpdateCheckProvider>
+                      <AutoDetectProvider>
                       <SidebarProvider>
                         <TooltipProvider>
                           <RecordingPostProcessingProvider>
                             <ImportDialogProvider onOpen={handleOpenImportDialog}>
                               {/* Download progress toast provider - listens for background downloads */}
                               <DownloadProgressToastProvider />
+                              <AutoDetectMonitor />
 
                               {/* Show onboarding or main app */}
                               {showOnboarding ? (
@@ -267,6 +271,7 @@ export default function RootLayout({
                           </RecordingPostProcessingProvider>
                         </TooltipProvider>
                       </SidebarProvider>
+                    </AutoDetectProvider>
                     </UpdateCheckProvider>
                   </OnboardingProvider>
 
